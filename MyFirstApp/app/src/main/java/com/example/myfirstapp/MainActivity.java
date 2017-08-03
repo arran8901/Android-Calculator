@@ -2,7 +2,6 @@ package com.example.myfirstapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
 
     private double number;
     private char operation;
-    private final DecimalFormat format = new DecimalFormat("0.##########");
+    private static final DecimalFormat format = new DecimalFormat("0.##########");
     private double memory;
     private boolean clear = false;
 
@@ -216,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
                 number = Double.parseDouble(resultBox.getText().toString());
             setEquals();
             operation = '√';
-            infoBox.setText("√");
+            infoBox.setText(superscript(String.format(format.format(number))) + "√");
             clear = true;
         } else {
             enableOperations();
@@ -239,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
                 number = Double.parseDouble(resultBox.getText().toString());
             operation = 'l';
             setEquals();
-            infoBox.setText("log");
+            infoBox.setText("log" + subscript(String.format(format.format(number))));
             clear = true;
         } else {
             enableOperations();
@@ -350,5 +349,33 @@ public class MainActivity extends AppCompatActivity {
             if(button != keep)
                 button.setEnabled(false);
         }
+    }
+
+    public static String subscript(String s) {
+        s = s.replaceAll("0", "₀");
+        s = s.replaceAll("1", "₁");
+        s = s.replaceAll("2", "₂");
+        s = s.replaceAll("3", "₃");
+        s = s.replaceAll("4", "₄");
+        s = s.replaceAll("5", "₅");
+        s = s.replaceAll("6", "₆");
+        s = s.replaceAll("7", "₇");
+        s = s.replaceAll("8", "₈");
+        s = s.replaceAll("9", "₉");
+        return s;
+    }
+
+    public static String superscript(String s) {
+        s = s.replaceAll("0", "⁰");
+        s = s.replaceAll("1", "¹");
+        s = s.replaceAll("2", "²");
+        s = s.replaceAll("3", "³");
+        s = s.replaceAll("4", "⁴");
+        s = s.replaceAll("5", "⁵");
+        s = s.replaceAll("6", "⁶");
+        s = s.replaceAll("7", "⁷");
+        s = s.replaceAll("8", "⁸");
+        s = s.replaceAll("9", "⁹");
+        return s;
     }
 }
