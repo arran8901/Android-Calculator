@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     private double number;
     private char operation;
-    private DecimalFormat format = new DecimalFormat("0.##########");
+    private final DecimalFormat format = new DecimalFormat("0.##########");
     private double memory;
     private boolean clear = false;
 
@@ -109,12 +109,14 @@ public class MainActivity extends AppCompatActivity {
         TextView infoBox = (TextView) findViewById(R.id.infoBox);
         ToggleButton plus = (ToggleButton) findViewById(R.id.toggleButtonPlus);
         if(plus.isChecked()) {
+            disableOperations(plus);
             number = Double.parseDouble(resultBox.getText().toString());
             setEquals();
             operation = '+';
             infoBox.setText("+");
             clear = true;
         } else {
+            enableOperations();
             resultBox.setText(String.format(format.format(number)));
             setAC();
             operation = '0';
@@ -127,12 +129,14 @@ public class MainActivity extends AppCompatActivity {
         TextView infoBox = (TextView) findViewById(R.id.infoBox);
         ToggleButton minus = (ToggleButton) findViewById(R.id.toggleButtonMinus);
         if(minus.isChecked()) {
+            disableOperations(minus);
             number = Double.parseDouble(resultBox.getText().toString());
             setEquals();
             operation = '-';
             infoBox.setText("-");
             clear = true;
         } else {
+            enableOperations();
             resultBox.setText(String.format(format.format(number)));
             setAC();
             operation = '0';
@@ -145,12 +149,14 @@ public class MainActivity extends AppCompatActivity {
         TextView infoBox = (TextView) findViewById(R.id.infoBox);
         ToggleButton times = (ToggleButton) findViewById(R.id.toggleButtonTimes);
         if(times.isChecked()) {
+            disableOperations(times);
             number = Double.parseDouble(resultBox.getText().toString());
             setEquals();
             operation = '*';
             infoBox.setText("x");
             clear = true;
         } else {
+            enableOperations();
             resultBox.setText(String.format(format.format(number)));
             setAC();
             operation = '0';
@@ -163,12 +169,14 @@ public class MainActivity extends AppCompatActivity {
         TextView infoBox = (TextView) findViewById(R.id.infoBox);
         ToggleButton divide = (ToggleButton) findViewById(R.id.toggleButtonDivide);
         if(divide.isChecked()) {
+            disableOperations(divide);
             number = Double.parseDouble(resultBox.getText().toString());
             setEquals();
             operation = '/';
             infoBox.setText("/");
             clear = true;
         } else {
+            enableOperations();
             resultBox.setText(String.format(format.format(number)));
             setAC();
             operation = '0';
@@ -181,12 +189,14 @@ public class MainActivity extends AppCompatActivity {
         TextView infoBox = (TextView) findViewById(R.id.infoBox);
         ToggleButton power = (ToggleButton) findViewById(R.id.toggleButtonPower);
         if(power.isChecked()) {
+            disableOperations(power);
             number = Double.parseDouble(resultBox.getText().toString());
             setEquals();
             operation = '^';
             infoBox.setText("xⁿ");
             clear = true;
         } else {
+            enableOperations();
             resultBox.setText(String.format(format.format(number)));
             setAC();
             operation = '0';
@@ -199,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
         TextView infoBox = (TextView) findViewById(R.id.infoBox);
         ToggleButton root = (ToggleButton) findViewById(R.id.toggleButtonRoot);
         if(root.isChecked()) {
+            disableOperations(root);
             if(Double.parseDouble(resultBox.getText().toString()) == 0)
                 number = 2;
             else
@@ -208,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
             infoBox.setText("√");
             clear = true;
         } else {
+            enableOperations();
             resultBox.setText(String.format(format.format(number)));
             setAC();
             operation = '0';
@@ -220,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
         TextView infoBox = (TextView) findViewById(R.id.infoBox);
         ToggleButton log = (ToggleButton) findViewById(R.id.toggleButtonLog);
         if(log.isChecked()) {
+            disableOperations(log);
             if(Double.parseDouble(resultBox.getText().toString()) == 0)
                 number = 10;
             else
@@ -229,6 +242,7 @@ public class MainActivity extends AppCompatActivity {
             infoBox.setText("log");
             clear = true;
         } else {
+            enableOperations();
             resultBox.setText(String.format(format.format(number)));
             setAC();
             operation = '0';
@@ -285,6 +299,7 @@ public class MainActivity extends AppCompatActivity {
                 log.setChecked(false);
                 break;
         }
+        enableOperations();
         infoBox.setText("");
         clear = true;
         setAC();
@@ -319,5 +334,21 @@ public class MainActivity extends AppCompatActivity {
         Button equals = (Button) findViewById(R.id.buttonEquals);
         if(!equals.getText().equals("AC"))
             equals.setText("AC");
+    }
+
+    public void enableOperations() {
+        ToggleButton[] operations = {(ToggleButton) findViewById(R.id.toggleButtonPlus), (ToggleButton) findViewById(R.id.toggleButtonMinus), (ToggleButton) findViewById(R.id.toggleButtonTimes), (ToggleButton) findViewById(R.id.toggleButtonDivide), (ToggleButton) findViewById(R.id.toggleButtonPower), (ToggleButton) findViewById(R.id.toggleButtonRoot), (ToggleButton) findViewById(R.id.toggleButtonLog)};
+        for(ToggleButton button: operations) {
+            if(!button.isEnabled())
+                button.setEnabled(true);
+        }
+    }
+
+    public void disableOperations(ToggleButton keep) {
+        ToggleButton[] operations = {(ToggleButton) findViewById(R.id.toggleButtonPlus), (ToggleButton) findViewById(R.id.toggleButtonMinus), (ToggleButton) findViewById(R.id.toggleButtonTimes), (ToggleButton) findViewById(R.id.toggleButtonDivide), (ToggleButton) findViewById(R.id.toggleButtonPower), (ToggleButton) findViewById(R.id.toggleButtonRoot), (ToggleButton) findViewById(R.id.toggleButtonLog)};
+        for(ToggleButton button: operations) {
+            if(button != keep)
+                button.setEnabled(false);
+        }
     }
 }
