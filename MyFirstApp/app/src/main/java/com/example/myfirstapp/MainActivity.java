@@ -2,6 +2,7 @@ package com.example.myfirstapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -33,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void buttonDecPointPressed(View view) {
         TextView resultBox = (TextView) findViewById(R.id.resultBox);
+        setupResultBox();
         if(!resultBox.getText().toString().contains(".")) {
-            setupResultBox();
             if(resultBox.getText().length() == 0)
                 resultBox.append("0");
             resultBox.append(".");
@@ -105,114 +106,142 @@ public class MainActivity extends AppCompatActivity {
 
     public void plusPressed(View view) {
         TextView resultBox = (TextView) findViewById(R.id.resultBox);
+        TextView infoBox = (TextView) findViewById(R.id.infoBox);
         ToggleButton plus = (ToggleButton) findViewById(R.id.toggleButtonPlus);
-        revertEquals();
         if(plus.isChecked()) {
             number = Double.parseDouble(resultBox.getText().toString());
+            setEquals();
             operation = '+';
+            infoBox.setText("+");
             clear = true;
         } else {
             resultBox.setText(String.format(format.format(number)));
+            setAC();
             operation = '0';
+            infoBox.setText("");
         }
     }
 
     public void minusPressed(View view) {
         TextView resultBox = (TextView) findViewById(R.id.resultBox);
+        TextView infoBox = (TextView) findViewById(R.id.infoBox);
         ToggleButton minus = (ToggleButton) findViewById(R.id.toggleButtonMinus);
-        revertEquals();
         if(minus.isChecked()) {
             number = Double.parseDouble(resultBox.getText().toString());
+            setEquals();
             operation = '-';
+            infoBox.setText("-");
             clear = true;
         } else {
             resultBox.setText(String.format(format.format(number)));
+            setAC();
             operation = '0';
+            infoBox.setText("");
         }
     }
 
     public void timesPressed(View view) {
         TextView resultBox = (TextView) findViewById(R.id.resultBox);
+        TextView infoBox = (TextView) findViewById(R.id.infoBox);
         ToggleButton times = (ToggleButton) findViewById(R.id.toggleButtonTimes);
-        revertEquals();
         if(times.isChecked()) {
             number = Double.parseDouble(resultBox.getText().toString());
+            setEquals();
             operation = '*';
+            infoBox.setText("x");
             clear = true;
         } else {
             resultBox.setText(String.format(format.format(number)));
+            setAC();
             operation = '0';
+            infoBox.setText("");
         }
     }
 
     public void dividePressed(View view) {
         TextView resultBox = (TextView) findViewById(R.id.resultBox);
+        TextView infoBox = (TextView) findViewById(R.id.infoBox);
         ToggleButton divide = (ToggleButton) findViewById(R.id.toggleButtonDivide);
-        revertEquals();
         if(divide.isChecked()) {
             number = Double.parseDouble(resultBox.getText().toString());
+            setEquals();
             operation = '/';
+            infoBox.setText("/");
             clear = true;
         } else {
             resultBox.setText(String.format(format.format(number)));
+            setAC();
             operation = '0';
+            infoBox.setText("");
         }
     }
 
     public void powerPressed(View view) {
         TextView resultBox = (TextView) findViewById(R.id.resultBox);
+        TextView infoBox = (TextView) findViewById(R.id.infoBox);
         ToggleButton power = (ToggleButton) findViewById(R.id.toggleButtonPower);
-        revertEquals();
         if(power.isChecked()) {
             number = Double.parseDouble(resultBox.getText().toString());
+            setEquals();
             operation = '^';
+            infoBox.setText("xⁿ");
             clear = true;
         } else {
             resultBox.setText(String.format(format.format(number)));
+            setAC();
             operation = '0';
+            infoBox.setText("");
         }
     }
 
     public void rootPressed(View view) {
         TextView resultBox = (TextView) findViewById(R.id.resultBox);
+        TextView infoBox = (TextView) findViewById(R.id.infoBox);
         ToggleButton root = (ToggleButton) findViewById(R.id.toggleButtonRoot);
-        revertEquals();
         if(root.isChecked()) {
             if(Double.parseDouble(resultBox.getText().toString()) == 0)
                 number = 2;
             else
                 number = Double.parseDouble(resultBox.getText().toString());
+            setEquals();
             operation = '√';
+            infoBox.setText("√");
             clear = true;
         } else {
             resultBox.setText(String.format(format.format(number)));
+            setAC();
             operation = '0';
+            infoBox.setText("");
         }
     }
 
     public void logPressed(View view) {
         TextView resultBox = (TextView) findViewById(R.id.resultBox);
+        TextView infoBox = (TextView) findViewById(R.id.infoBox);
         ToggleButton log = (ToggleButton) findViewById(R.id.toggleButtonLog);
-        revertEquals();
         if(log.isChecked()) {
             if(Double.parseDouble(resultBox.getText().toString()) == 0)
                 number = 10;
             else
                 number = Double.parseDouble(resultBox.getText().toString());
             operation = 'l';
+            setEquals();
+            infoBox.setText("log");
             clear = true;
         } else {
             resultBox.setText(String.format(format.format(number)));
+            setAC();
             operation = '0';
+            infoBox.setText("");
         }
     }
 
     public void equalsPressed(View view) {
         TextView resultBox = (TextView) findViewById(R.id.resultBox);
+        TextView infoBox = (TextView) findViewById(R.id.infoBox);
         Button equals = (Button) findViewById(R.id.buttonEquals);
-        if(equals.getText().equals("AC")) {
+        if(equals.getText().equals("AC") || equals.getText().equals("= / AC")) {
             resultBox.setText("0");
-            equals.setText("=");
             return;
         }
         switch(operation) {
@@ -256,8 +285,9 @@ public class MainActivity extends AppCompatActivity {
                 log.setChecked(false);
                 break;
         }
+        infoBox.setText("");
         clear = true;
-        equals.setText("AC");
+        setAC();
     }
 
     public void memoryPressed(View view) {
@@ -276,13 +306,18 @@ public class MainActivity extends AppCompatActivity {
             resultBox.setText("");
             if(clear == true)
                 clear = false;
-            revertEquals();
         }
     }
 
-    public void revertEquals() {
+    public void setEquals() {
         Button equals = (Button) findViewById(R.id.buttonEquals);
         if(!equals.getText().equals("="))
             equals.setText("=");
+    }
+
+    public void setAC() {
+        Button equals = (Button) findViewById(R.id.buttonEquals);
+        if(!equals.getText().equals("AC"))
+            equals.setText("AC");
     }
 }
