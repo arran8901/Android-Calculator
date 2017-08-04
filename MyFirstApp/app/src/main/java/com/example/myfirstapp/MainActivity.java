@@ -116,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
             clear = true;
         } else {
             enableOperations();
-            resultBox.setText(String.format(format.format(number)));
             setAC();
             operation = '0';
             infoBox.setText("");
@@ -136,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
             clear = true;
         } else {
             enableOperations();
-            resultBox.setText(String.format(format.format(number)));
             setAC();
             operation = '0';
             infoBox.setText("");
@@ -156,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
             clear = true;
         } else {
             enableOperations();
-            resultBox.setText(String.format(format.format(number)));
             setAC();
             operation = '0';
             infoBox.setText("");
@@ -176,7 +173,6 @@ public class MainActivity extends AppCompatActivity {
             clear = true;
         } else {
             enableOperations();
-            resultBox.setText(String.format(format.format(number)));
             setAC();
             operation = '0';
             infoBox.setText("");
@@ -196,7 +192,6 @@ public class MainActivity extends AppCompatActivity {
             clear = true;
         } else {
             enableOperations();
-            resultBox.setText(String.format(format.format(number)));
             setAC();
             operation = '0';
             infoBox.setText("");
@@ -219,7 +214,6 @@ public class MainActivity extends AppCompatActivity {
             clear = true;
         } else {
             enableOperations();
-            resultBox.setText(String.format(format.format(number)));
             setAC();
             operation = '0';
             infoBox.setText("");
@@ -242,7 +236,6 @@ public class MainActivity extends AppCompatActivity {
             clear = true;
         } else {
             enableOperations();
-            resultBox.setText(String.format(format.format(number)));
             setAC();
             operation = '0';
             infoBox.setText("");
@@ -254,51 +247,59 @@ public class MainActivity extends AppCompatActivity {
         TextView infoBox = (TextView) findViewById(R.id.infoBox);
         Button equals = (Button) findViewById(R.id.buttonEquals);
         if(equals.getText().equals("AC") || equals.getText().equals("= / AC")) {
+            enableOperations();
             resultBox.setText("0");
             return;
         }
+        String result = "";
         switch(operation) {
             case '+':
-                resultBox.setText(String.format(format.format(number + Double.parseDouble(resultBox.getText().toString()))));
+                result = String.format(format.format(number + Double.parseDouble(resultBox.getText().toString())));
                 ToggleButton plus = (ToggleButton) findViewById(R.id.toggleButtonPlus);
                 plus.setChecked(false);
                 break;
             case '-':
-                resultBox.setText(String.format(format.format(number - Double.parseDouble(resultBox.getText().toString()))));
+                result = String.format(format.format(number - Double.parseDouble(resultBox.getText().toString())));
                 ToggleButton minus = (ToggleButton) findViewById(R.id.toggleButtonMinus);
                 minus.setChecked(false);
                 break;
             case '*':
-                resultBox.setText(String.format(format.format(number * Double.parseDouble(resultBox.getText().toString()))));
+                result = String.format(format.format(number * Double.parseDouble(resultBox.getText().toString())));
                 ToggleButton times = (ToggleButton) findViewById(R.id.toggleButtonTimes);
                 times.setChecked(false);
                 break;
             case '/':
                 if(Double.parseDouble(resultBox.getText().toString()) == 0)
                     return;
-                resultBox.setText(String.format(format.format(number / Double.parseDouble(resultBox.getText().toString()))));
+                result = String.format(format.format(number / Double.parseDouble(resultBox.getText().toString())));
                 ToggleButton divide = (ToggleButton) findViewById(R.id.toggleButtonDivide);
                 divide.setChecked(false);
                 break;
             case '^':
-                resultBox.setText(String.format(format.format(Math.pow(number, Double.parseDouble(resultBox.getText().toString())))));
+                result = String.format(format.format(Math.pow(number, Double.parseDouble(resultBox.getText().toString()))));
                 ToggleButton power = (ToggleButton) findViewById(R.id.toggleButtonPower);
                 power.setChecked(false);
                 break;
             case '√':
-                resultBox.setText(String.format(format.format(Math.pow(Double.parseDouble(resultBox.getText().toString()), 1 / number))));
+                result = String.format(format.format(Math.pow(Double.parseDouble(resultBox.getText().toString()), 1 / number)));
                 ToggleButton root = (ToggleButton) findViewById(R.id.toggleButtonRoot);
                 root.setChecked(false);
                 break;
             case 'l':
                 if(Double.parseDouble(resultBox.getText().toString()) == 0)
                     return;
-                resultBox.setText(String.format(format.format(Math.log10(Double.parseDouble(resultBox.getText().toString())) / Math.log10(number))));
+                result = String.format(format.format(Math.log10(Double.parseDouble(resultBox.getText().toString())) / Math.log10(number)));
                 ToggleButton log = (ToggleButton) findViewById(R.id.toggleButtonLog);
                 log.setChecked(false);
                 break;
         }
-        enableOperations();
+        if(result.length() > 30)
+            result = "∞";
+        if(result.equals("∞"))
+            disableOperations(null);
+        else
+            enableOperations();
+        resultBox.setText(result);
         infoBox.setText("");
         clear = true;
         setAC();
@@ -316,6 +317,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void setupResultBox() {
         TextView resultBox = (TextView) findViewById(R.id.resultBox);
+        if(resultBox.getText().toString().equals("∞")) {
+            resultBox.setText("0");
+            enableOperations();
+        }
         if((Double.parseDouble(resultBox.getText().toString()) == 0 && !resultBox.getText().toString().equals("0.")) || clear == true) {
             resultBox.setText("");
             if(clear == true)
